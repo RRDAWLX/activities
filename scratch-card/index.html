@@ -11,17 +11,28 @@
             #scratchCard {
                 width: 3.71rem; height: 2.57rem; border: 1px dashed black; margin: 0.50rem auto;
             }
+            #buttons {
+                display: flex; justify-content: space-around;
+            }
+            button {
+                border: 1px solid #2e6da4;
+                border-radius: 5px;
+                background: #337ab7;
+                color: #fff;
+            }
             p {
-                font-size: 0.2rem;
+                font-size: 0.2rem; text-align: center;
             }
         </style>
     </head>
     <body>
         <div id="scratchCard"></div>
-        <button id="reset">再抽一次</button>
-        <button id="trans">透明化</button>
-        <button id="data">打印像素数据</button>
-        <button id="info">打印画布信息</button>
+        <div id="buttons">
+            <button id="reset">再抽一次</button>
+            <button id="trans">透明化</button>
+            <button id="data">打印像素数据</button>
+            <button id="info">打印画布信息</button>
+        </div>
         <p id="msg"></p>
         <script src="./index.js"></script>
     </body>

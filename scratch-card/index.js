@@ -34,8 +34,9 @@ class ScratchCard {
     }
 
     /* 设置奖项图片 */
-    setPrizeImage(imgUrl) {
-        this.canvas.style.backgroundImage = `url(${imgUrl})`;
+    setPrizeInfo(info) {
+        this.canvas.style.backgroundImage = `url(${info.imgUrl})`;
+        this.prizeMsg = info.msg;
         return this;
     }
 
@@ -79,7 +80,7 @@ class ScratchCard {
         context.fill();
     }
 
-    /* 检查刮刮卡是否已被刮开了足够的区域 */
+    /* 检查刮刮卡是否已被刮开了足够的区域，如果刮开了足够的区域，则认为刮刮卡已被刮开，清楚刮层，并执行后续相关操作 */
     check() {
         if (this.scratched) {
             return;
@@ -96,7 +97,9 @@ class ScratchCard {
         if (counter / len * 4 > 0.5) {
             this.clear();
             this.scratched = true;
-            setTimeout(() => {window.alert('中奖了！');}, 0);
+            setTimeout(() => {
+                alert(this.prizeMsg);
+            }, 0);
         }
     }
 
@@ -134,12 +137,17 @@ class ScratchCard {
     }
 }
 
-let scratchCard = new ScratchCard('#scratchCard');
-scratchCard.setPrizeImage('./prize.jpg');
+let scratchCard = new ScratchCard('#scratchCard').setPrizeInfo({
+    imgUrl: './prize.jpg',
+    msg: '恭喜，中奖了！'
+});
 
 // 调试用操作
 document.querySelector('#reset').addEventListener('click', () => {
-    scratchCard.cover().setPrizeImage('./prize.jpg');
+    scratchCard.cover().setPrizeInfo({
+        imgUrl: './prize.jpg',
+        msg: '恭喜，中奖了！'
+    });
 }, false);
 document.querySelector('#trans').addEventListener('click', () => {
     scratchCard.transparentize();
