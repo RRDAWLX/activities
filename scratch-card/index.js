@@ -18,11 +18,11 @@ class ScratchCard {
         style.backgroundPosition = 'center';
         style.backgroundSize = 'contain';
 
-        this.cover();
-        this.addListeners();
+        this.cover().addListeners();
         this.parent.appendChild(this.canvas);
     }
 
+    /* 覆盖刮刮卡，重置刮层 */
     cover() {
         this.scratched = false;     // 标识未被刮开
         let context = this.context;
@@ -30,14 +30,16 @@ class ScratchCard {
         context.fillStyle = 'grey';
         context.fillRect(0, 0, this.width, this.height);
         context.globalCompositeOperation = 'destination-out';
-
+        return this;
     }
 
+    /* 设置奖项图片 */
     setPrizeImage(imgUrl) {
         this.canvas.style.backgroundImage = `url(${imgUrl})`;
         return this;
     }
 
+    /* 监听挂卡操作 */
     addListeners() {
         this.canvas.addEventListener('touchstart', this.scratchMobile, false);
         this.canvas.addEventListener('touchmove', this.scratchMobile, false);
@@ -45,8 +47,10 @@ class ScratchCard {
         this.canvas.addEventListener('touchend', this.check, false);
         this.canvas.addEventListener('touchcancel', this.check, false);
         this.canvas.addEventListener('mouseout', this.check, false);
+        return this;
     }
 
+    /* 移动端刮卡 */
     scratchMobile(e) {
         let context = this.context,
             canvas = this.canvas,
@@ -54,7 +58,6 @@ class ScratchCard {
             radius = 30,
             x = touch.pageX - canvas.offsetLeft,
             y = touch.pageY - canvas.offsetTop;
-        // console.log(x, y);
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.closePath();
@@ -62,13 +65,13 @@ class ScratchCard {
         context.fill();
     }
 
+    /* 桌面端刮卡 */
     scratchPc(e) {
         let context = this.context,
             canvas = this.canvas,
             radius = 30,
             x = e.layerX,
             y = e.layerY;
-        // console.log(x, y);
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.closePath();
@@ -76,6 +79,7 @@ class ScratchCard {
         context.fill();
     }
 
+    /* 检查刮刮卡是否已被刮开了足够的区域 */
     check() {
         if (this.scratched) {
             return;
@@ -96,10 +100,14 @@ class ScratchCard {
         }
     }
 
+    /* 清除刮层 */
     clear() {
         this.context.clearRect(0, 0, this.width, this.height);
     }
 
+
+    // 调试用工具方法
+    /* 使刮层透明 */
     transparentize() {
         let image = this.context.getImageData(0, 0, this.width, this.height);
         for (let i = 3, len = image.data.length; i <= len; i += 4) {
@@ -110,6 +118,7 @@ class ScratchCard {
         console.log(image.data.slice(0, 10));
     }
 
+    /* 获取画布部分像素信息 */
     getImageData() {
         let data = this.context.getImageData(0, 0, this.width, this.height).data,
             customData = [];
@@ -119,6 +128,7 @@ class ScratchCard {
         return customData;
     }
 
+    /* 获取画布绘图区域像素长度 */
     getPixelLength() {
         return this.context.getImageData(0, 0, this.width, this.height).data.length / 4;
     }
@@ -126,8 +136,10 @@ class ScratchCard {
 
 let scratchCard = new ScratchCard('#scratchCard');
 scratchCard.setPrizeImage('./prize.jpg');
+
+// 调试用操作
 document.querySelector('#reset').addEventListener('click', () => {
-    scratchCard.cover();
+    scratchCard.cover().setPrizeImage('./prize.jpg');
 }, false);
 document.querySelector('#trans').addEventListener('click', () => {
     scratchCard.transparentize();
