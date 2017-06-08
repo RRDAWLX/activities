@@ -137,7 +137,7 @@ class ScratchCard {
     }
 }
 
-function getAPrize() {
+let getAPrize = function() {
     let prizes = [
         {
             imgUrl: './coupon.jpg',
@@ -153,8 +153,8 @@ function getAPrize() {
         }
     ];
 
-    return prizes[Math.floor(Math.random() * 3)];
-}
+    return () => prizes[Math.floor(Math.random() * 3)];
+}();
 
 let scratchCard = new ScratchCard('#scratchCard').setPrizeInfo(getAPrize());
 
