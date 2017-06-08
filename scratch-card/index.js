@@ -137,17 +137,30 @@ class ScratchCard {
     }
 }
 
-let scratchCard = new ScratchCard('#scratchCard').setPrizeInfo({
-    imgUrl: './prize.jpg',
-    msg: '恭喜，中奖了！'
-});
+function getAPrize() {
+    let prizes = [
+        {
+            imgUrl: './coupon.jpg',
+            msg: '优惠券'
+        },
+        {
+            imgUrl: './camera.png',
+            msg: '单反'
+        },
+        {
+            imgUrl: './watch.png',
+            msg: '手表'
+        }
+    ];
+
+    return prizes[Math.floor(Math.random() * 3)];
+}
+
+let scratchCard = new ScratchCard('#scratchCard').setPrizeInfo(getAPrize());
 
 // 调试用操作
 document.querySelector('#reset').addEventListener('click', () => {
-    scratchCard.cover().setPrizeInfo({
-        imgUrl: './prize.jpg',
-        msg: '恭喜，中奖了！'
-    });
+    scratchCard.cover().setPrizeInfo(getAPrize());
 }, false);
 document.querySelector('#trans').addEventListener('click', () => {
     scratchCard.transparentize();
