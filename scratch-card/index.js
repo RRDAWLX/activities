@@ -53,6 +53,10 @@ class ScratchCard {
 
     /* 移动端刮卡 */
     scratchMobile(e) {
+        if (this.scratched) {
+            return;
+        }
+
         let context = this.context,
             canvas = this.canvas,
             touch = e.changedTouches[0],
@@ -62,12 +66,15 @@ class ScratchCard {
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.closePath();
-        context.fillStyle = 'white';
         context.fill();
     }
 
     /* 桌面端刮卡 */
     scratchPc(e) {
+        if (this.scratched) {
+            return;
+        }
+
         let context = this.context,
             canvas = this.canvas,
             radius = 30,
@@ -76,7 +83,6 @@ class ScratchCard {
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.closePath();
-        context.fillStyle = 'white';
         context.fill();
     }
 
