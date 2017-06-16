@@ -16,13 +16,13 @@ class ScratchCard {
         style.backgroundPosition = 'center';
         style.backgroundSize = 'contain';
 
+        this.scratched = true;     // 初始时未设置奖项，标识为已被刮开，从而忽略刮卡操作。
         this.cover().addListeners();
         this.parent.appendChild(this.canvas);
     }
 
     /* 覆盖刮刮卡，重置刮层 */
     cover() {
-        this.scratched = false;     // 标识未被刮开
         let context = this.context;
         context.globalCompositeOperation = 'source-over';
         context.fillStyle = 'grey';
@@ -35,6 +35,7 @@ class ScratchCard {
     setPrizeInfo(info) {
         this.canvas.style.backgroundImage = `url(${info.imgUrl})`;
         this.prizeMsg = info.msg;
+        this.scratched = false;
         return this;
     }
 
