@@ -3,13 +3,11 @@ class ScratchCard {
         this.scratchMobile = this.scratchMobile.bind(this);
         this.scratchPc = this.scratchPc.bind(this);
         this.check = this.check.bind(this);
-        this.clear = this.clear.bind(this);
         this.getImageData = this.getImageData.bind(this);
 
         this.parent = document.querySelector(parentSelector);
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
-
         this.width = this.canvas.width = this.parent.clientWidth;
         this.height = this.canvas.height = this.parent.clientHeight;
 
@@ -105,7 +103,7 @@ class ScratchCard {
             this.scratched = true;
             setTimeout(() => {
                 alert(this.prizeMsg);
-            }, 0);
+            }, 17);
         }
     }
 
