@@ -9,7 +9,7 @@ class Slot {
             console.log('Prizes length must equal or greater than 2!');
             return false;
         }
-        this.currentPrizeIndex = 0;     // 当前显示奖项序号
+        this.currentPrizeIndex = 2;     // 当前显示奖项序号
         this.itemHeight = 100;
         this.totalHeight = this.itemHeight * this.prizes.length;    // 所有奖项总高度
         this.createDoms();
@@ -25,7 +25,7 @@ class Slot {
         items.forEach(item => {
             itemsHtml += `<li class="prize ${item.class}">${item.value}</li>`;
         });
-        slot.innerHTML = `<ul class="prizes-list" style="margin-top: -${this.itemHeight / 2}px;">${itemsHtml}</ul>`;
+        slot.innerHTML = `<ul class="prizes-list" style="margin-top: -${this.itemHeight / 2}px; transform: translate3d(0, -${this.itemHeight * this.currentPrizeIndex}px, 0);">${itemsHtml}</ul>`;
         this.prizesList = this.slot.querySelector('.prizes-list');
     }
 
@@ -70,6 +70,7 @@ class Slot {
      * @param {Number} duration 摇奖时间，单位 ms
       */
     draw({prizeIndex, duration}) {
+        prizeIndex = prizeIndex % this.prizes.length;
         let distinedScrollDistance = this.calculateDestinedScrollDistance(prizeIndex);
         let getDeltaDistance = this.timingFunctionGenerator(distinedScrollDistance, duration);
         let currentPosition = -this.currentPrizeIndex * this.itemHeight;
@@ -101,4 +102,4 @@ class Slot {
 }
 
 let slot = new Slot();console.log(slot);
-slot.draw({prizeIndex: 1, duration: 2000});
+// slot.draw({prizeIndex: 1, duration: 2000});
