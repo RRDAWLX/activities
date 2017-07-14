@@ -33,34 +33,15 @@
     </head>
 
     <body>
-        <div id="slots">
-            <div class="slot">
-                <ul class="prizes-list">
-                    <!-- <li class="prize three">
-                        3
-                    </li>
-                    <li class="prize one">
-                        1
-                    </li>
-                    <li class="prize two">
-                        2
-                    </li>
-                    <li class="prize three">
-                        3
-                    </li>
-                    <li class="prize one">
-                        1
-                    </li>
-                    <li class="prize two">
-                        2
-                    </li> -->
-                </ul>
-            </div>
-        </div>
+        <div id="slots"></div>
+        <select id="prize">
+            <option value="0">1</option>
+            <option value="1">2</option>
+            <option value="2">3</option>
+        </select>
+        <button id="draw">抽奖</button>
         <script src="./d3-ease.js"></script>
-        <!-- <script>
-        let timintFunction = d3.easeQuadInOut(3);
-        </script> -->
+        <script src="./slot.js"></script>
         <script src="./index.js"></script>
     </body>
 </html>
