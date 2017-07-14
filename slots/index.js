@@ -30,38 +30,9 @@ class Slot {
     }
 
     getTimingFunctionGenerator() {
-        this.timingFunctionGenerator = function(distance, duration) {
-            let slope = distance / duration ;
-            return function(t) {
-                let deltaDistance = slope * t;
-                if (deltaDistance > distance) {
-                    return distance;
-                }
-                return deltaDistance;
-            };
+        this.timingFunctionGenerator = function(duration) {
+            return d3.easeCubicInOut;
         };
-    }
-
-    getScrollFunction(distinedScrollDistance, getDeltaDistance) {
-        /*let currentPosition = -this.currentPrizeIndex * this.itemHeight,
-            prizesListStyle = this.prizesList.style,
-            totalHeight = this.totalHeight,
-            startTime, deltaTime, deltaDistance;
-        let frame = () => {
-            deltaTime = Date.now() - startTime;
-            let deltaDistance = getDeltaDistance(deltaTime);
-            let position = (currentPosition - deltaDistance) % totalHeight;
-            prizesListStyle.transform = `translate3d(0, ${position}px, 0)`;
-            if (deltaDistance < distinedScrollDistance) {
-                window.requestAnimationFrame(frame);
-            } else {
-                this.currentPosition = prizeIndex;
-            }
-        };
-        return () => {
-            startTime = Date.now();
-            frame();
-        };*/
     }
 
     /**
@@ -69,18 +40,21 @@ class Slot {
      * @param {Number} prizeIndex 奖项序号
      * @param {Number} duration 摇奖时间，单位 ms
       */
-    draw({prizeIndex, duration}) {
+    draw({prizeIndex, duration = 8000}) {
         prizeIndex = prizeIndex % this.prizes.length;
         let distinedScrollDistance = this.calculateDestinedScrollDistance(prizeIndex);
-        let getDeltaDistance = this.timingFunctionGenerator(distinedScrollDistance, duration);
+        let timingFunction = this.timingFunctionGenerator(duration);
         let currentPosition = -this.currentPrizeIndex * this.itemHeight;
         let startTime;
         let frame = () => {
             let deltaTime = Date.now() - startTime;
-            let deltaDistance = getDeltaDistance(deltaTime);
+            if (deltaTime > duration) {
+                deltaTime = duration;
+            }
+            let deltaDistance = distinedScrollDistance * timingFunction(deltaTime / duration);
             let position = (currentPosition - deltaDistance) % this.totalHeight;
             this.prizesList.style.transform = `translate3d(0, ${position}px, 0)`;
-            if (deltaDistance < distinedScrollDistance) {
+            if (deltaTime < duration) {
                 window.requestAnimationFrame(frame);
             } else {
                 this.currentPosition = prizeIndex;
@@ -102,4 +76,4 @@ class Slot {
 }
 
 let slot = new Slot();console.log(slot);
-// slot.draw({prizeIndex: 1, duration: 2000});
+slot.draw({prizeIndex: 1});
