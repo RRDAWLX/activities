@@ -34,7 +34,7 @@ class Slot {
     }
 
     getTimingFunctionGenerator() {
-        this.timingFunctionGenerator = function(duration) {
+        this.timingFunctionGenerator = function() {
             return d3.easeCubicInOut;
         };
     }
@@ -54,7 +54,7 @@ class Slot {
     draw({prizeIndex, duration = 8000}) {
         prizeIndex = prizeIndex % this.prizes.length;
         let distinedScrollDistance = this.calculateDestinedScrollDistance(prizeIndex);
-        let timingFunction = this.timingFunctionGenerator(duration);
+        let timingFunction = this.timingFunctionGenerator();
         let currentPosition = -this.currentPrizeIndex * this.itemHeight;
         let startTime;
         let frame = () => {
