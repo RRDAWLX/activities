@@ -1,10 +1,11 @@
-document.getElementById('cards').addEventListener('click', function(e) {
-    let target = e.target;
-    while (target) {
-        if (target.classList.contains('card-container')) {
-            target.classList.toggle('center');
-            break;
-        }
-        target = target.parentElement;
-    }
-}, false);
+let prizes = [
+    {image: './bracelet.png'},
+    {image: './earphone.png'},
+    {image: './laptop.png'},
+    {image: './phone.png'}
+];
+
+let turnover = new Turnover({prizes});  console.log(turnover);
+let button = document.querySelector('#button');
+document.body.appendChild(turnover.dom);
+document.body.appendChild(turnover.button);
