@@ -15,11 +15,11 @@ class Slot {
         this.itemHeight = itemHeight;
         this.totalHeight = this.itemHeight * this.prizes.length;    // 所有奖项总高度
         this.loop = loop;
-        this.createDoms();
+        this.createDom();
         this.getTimingFunctionGenerator();
     }
 
-    createDoms() {
+    createDom() {
         let slot = this.dom = document.createElement('div');
         slot.className = 'slot';
         let prizes = this.prizes,
@@ -27,7 +27,7 @@ class Slot {
             items = [];
         items.push(prizes[prizes.length - 1], ...prizes, ...prizes.slice(0, 2));
         items.forEach(item => {
-            itemsHtml += `<li class="prize ${item.class}">${item.value}</li>`;
+            itemsHtml += `<li class="prize"><img src="${item.image}" /></li>`;
         });
         slot.innerHTML = `<ul class="prizes-list" style="margin-top: -${this.itemHeight / 2}px; transform: translate3d(0, -${this.itemHeight * this.currentPrizeIndex}px, 0);">${itemsHtml}</ul>`;
         this.prizesList = slot.querySelector('.prizes-list');
