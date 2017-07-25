@@ -8,7 +8,7 @@ class Slot {
     constructor({prizes, itemHeight = 100, initialIndex = 0, loop = 20}) {
         this.prizes = prizes;
         if (this.prizes.length < 2) {
-            console.log('奖项数组长度必须大于等于2!');
+            console.error('奖项数组长度必须大于等于2!');
             return false;
         }
         this.currentPrizeIndex = initialIndex % prizes.length;     // 当前显示奖项序号
@@ -49,7 +49,7 @@ class Slot {
     /**
      * @desc 抽奖，在指定的时间内滚动至指定的奖项。
      * @param {Number} prizeIndex 奖项在初始化奖项数组中的序号
-     * @param {Number} duration 摇奖时间，单位 ms
+     * @param {Number} duration 摇奖时间，单位 ms，默认 8000ms。
       */
     draw({prizeIndex, duration = 8000}) {
         return new Promise(

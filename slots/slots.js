@@ -1,10 +1,29 @@
 class Slots {
-    constructor({prizes}) {
+    /**
+     * @param {Array} prizes 奖励数组
+     * @param {Number} duration 每个 slot 的滚动时间，单位 ms，默认 8000ms。
+     * @param {Number} slotsNum slots 中 slot 的个数，默认 3 个，至少 2 个。
+     * @param {Number} slotScrollInterval 相连两个 slot 的滚动时间差，单位 ms，默认间隔 500ms。
+     */
+    constructor({prizes, duration = 8000, slotsNum = 3, slotScrollInterval = 500}) {
         this.status = 0;    // 0:初始化中；1：初始化完成，可以进行抽奖；2：抽奖中；3：抽奖完成，可再次进行抽奖。
         this.prizes = prizes;
-        this.slots = [new Slot({prizes}), new Slot({prizes}), new Slot({prizes})];
+        this.duration = duration;
+        if (slotsNum > 1) {
+            this.createSlots(slotsNum);
+        } else {
+            console.error('slot 个数至少 2 个！');
+        }
+        this.slotScrollInterval = slotScrollInterval;
         this.createDom();
         this.status = 1;
+    }
+
+    createSlots(slotsNum) {
+        this.slots = [];
+        for (let i = 0; i < slotsNum; i++) {
+            this.slots.push(new Slot({prizes}));
+        }
     }
 
     createDom() {
@@ -26,9 +45,9 @@ class Slots {
                 promises.push(new Promise(resolve => {
                     setTimeout(() => {
                         resolve();
-                    }, 1000 * i);
+                    }, this.slotScrollInterval * i);
                 }).then(() => {
-                    return slots[i].draw({prizeIndex: prizesIndexes[i]});
+                    return slots[i].draw({prizeIndex: prizesIndexes[i], duration: this.duration});
                 }));
             }
 
@@ -68,7 +87,7 @@ class Slots {
                 prizesArr = this.getRandomArr();
             } while (prizesArr.every(checkIfEqual));
         }
-        
+
         console.log(`DestinedPrizeIndexesArray: ${prizesArr}`);
         return prizesArr;
     }
