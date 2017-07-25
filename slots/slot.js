@@ -8,7 +8,7 @@ class Slot {
     constructor({prizes, itemHeight = 100, initialIndex = 0, loop = 20}) {
         this.prizes = prizes;
         if (this.prizes.length < 2) {
-            console.log('Prizes length must equal or greater than 2!');
+            console.log('奖项数组长度必须大于等于2!');
             return false;
         }
         this.currentPrizeIndex = initialIndex % prizes.length;     // 当前显示奖项序号
