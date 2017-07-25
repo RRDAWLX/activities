@@ -48,30 +48,35 @@ class Slot {
 
     /**
      * @desc 抽奖，在指定的时间内滚动至指定的奖项。
-     * @param {Number} prizeIndex 奖项序号
+     * @param {Number} prizeIndex 奖项在初始化奖项数组中的序号
      * @param {Number} duration 摇奖时间，单位 ms
       */
     draw({prizeIndex, duration = 8000}) {
-        prizeIndex = prizeIndex % this.prizes.length;
-        let distinedScrollDistance = this.calculateDestinedScrollDistance(prizeIndex);
-        let timingFunction = this.timingFunctionGenerator();
-        let currentPosition = -this.currentPrizeIndex * this.itemHeight;
-        let startTime;
-        let frame = () => {
-            let deltaTime = Date.now() - startTime;
-            if (deltaTime > duration) {
-                deltaTime = duration;
+        return new Promise(
+            (resolve) => {
+                prizeIndex = prizeIndex % this.prizes.length;
+                let distinedScrollDistance = this.calculateDestinedScrollDistance(prizeIndex);
+                let timingFunction = this.timingFunctionGenerator();
+                let currentPosition = -this.currentPrizeIndex * this.itemHeight;
+                let startTime;
+                let frame = () => {
+                    let deltaTime = Date.now() - startTime;
+                    if (deltaTime > duration) {
+                        deltaTime = duration;
+                    }
+                    let deltaDistance = distinedScrollDistance * timingFunction(deltaTime / duration);
+                    let position = (currentPosition - deltaDistance) % this.totalHeight;
+                    this.prizesList.style.transform = `translate3d(0, ${position}px, 0)`;
+                    if (deltaTime < duration) {
+                        window.requestAnimationFrame(frame);
+                    } else {
+                        this.currentPrizeIndex = prizeIndex;
+                        resolve();
+                    }
+                };
+                startTime = Date.now();
+                frame();
             }
-            let deltaDistance = distinedScrollDistance * timingFunction(deltaTime / duration);
-            let position = (currentPosition - deltaDistance) % this.totalHeight;
-            this.prizesList.style.transform = `translate3d(0, ${position}px, 0)`;
-            if (deltaTime < duration) {
-                window.requestAnimationFrame(frame);
-            } else {
-                this.currentPrizeIndex = prizeIndex;
-            }
-        };
-        startTime = Date.now();
-        frame();
+        );
     }
 }
