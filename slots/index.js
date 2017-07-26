@@ -4,7 +4,7 @@ let prizes = [
         {value: 2, image: './bracelet.png', desc: '手环'},
         {value: 3, image: './earphone.png', desc: '耳机'}
     ],
-    slots = new Slots({prizes, duration: 8000, slotsNum: 4, slotScrollInterval: 500}),
+    slots = new Slots({prizes, duration: 7000, slotsNum: 4, slotScrollInterval: 400}),
     prizeSelector = document.querySelector('#prize');
 
 document.body.insertBefore(slots.dom, document.querySelector('.operation'));
