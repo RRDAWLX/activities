@@ -1,7 +1,10 @@
+/**
+ * 地球固定，照相机转动。
+ */
+
 let scene, camera, renderer, axes,
     sphere, sphereGeometry, sphereMaterial, texture,
-    cube, cubeGeometry, cubeMaterial,
-    gamma = 0,
+    gamma = Math.PI / 2,
     initAlpha, initBeta, initGamma,
     deltaAphpa = 0,
     deltaBeta = 0,
@@ -16,7 +19,6 @@ function init() {
     camera.position.x = 0;
     camera.position.y = 0;
     camera.position.z = 50;
-    camera.lookAt(scene.position);
 
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(new THREE.Color(0x111111));
@@ -32,24 +34,13 @@ function init() {
         scene.add(sphere);
         animate();
     });
-
-    /*cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
-    cubeMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
-        wireframe: true
-    });
-    cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    scene.add(cube);*/
 }
 
 function animate() {
-    gamma += 0.01;
-    // cube.rotation.x = deltaBeta + touchBeta;
-    // cube.rotation.y = deltaGamma + touchGamma;
-    // cube.rotation.z = deltaAlpha;
-    sphere.rotation.x = deltaBeta + touchBeta;
-    sphere.rotation.y = gamma + deltaGamma + touchGamma;
-    // sphere.rotation.z = deltaAlpha;
+    gamma -= 0.01;
+    camera.position.x = 50 * Math.cos(gamma);
+    camera.position.z = 50 * Math.sin(gamma);
+    camera.lookAt(scene.position);
     renderer.render(scene, camera);
     window.requestAnimationFrame(animate);
 }
@@ -64,16 +55,6 @@ window.addEventListener('deviceorientation', e => {
     deltaBeta = (e.beta - initBeta) / 180 * Math.PI;
     deltaGamma = (e.gamma - initGamma) / 180 * Math.PI * 2;
 });
-
-// devicemotion事件对象的相关属性还未理解清楚
-/*var t = Date.now();
-var p = document.querySelector('p');
-window.addEventListener('devicemotion', e => {
-    if (Date.now() - t > 1000) {
-        t = Date.now();
-        p.innerHTML = `${e.acceleration.x}<br/>${e.acceleration.y}<br/>${e.acceleration.z}`;
-    }
-});*/
 
 let startX, startY;
 window.addEventListener('touchstart', e => {
