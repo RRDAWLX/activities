@@ -20,7 +20,27 @@ class Card {
         this.cardFront.innerHTML = `<img src="${image}" />`;
     }
 
-    resetPrize() {
+    clearPrize() {
         this.cardFront.innerHTML = '';
+    }
+
+    turnToFront() {
+        return this.card.animate([
+            {transform: 'rotateY(180deg)'},
+            {transform: 'rotateY(0deg)'}
+        ], {
+            duration: 500,
+            fill: 'both'
+        }).finished;
+    }
+
+    turnToBack() {
+        return this.card.animate([
+            {transform: 'rotateY(0deg)'},
+            {transform: 'rotateY(180deg)'}
+        ], {
+            duration: 500,
+            fill: 'both'
+        }).finished;
     }
 }

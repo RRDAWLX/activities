@@ -4,8 +4,9 @@ class Slot {
      * @param {Number} itemHeight 单个奖项元素的高度，单位 px，默认 100px。
      * @param {Number} initialIndex 初始化时显示的奖项,默认为第一个奖项。
      * @param {Number} loop 抽奖过程中旋转的圈数，默认20圈。
+     * @param {String} timingFnName 计时函数名，默认为 easeCubicInOut。
      */
-    constructor({prizes, itemHeight = 100, initialIndex = 0, loop = 20}) {
+    constructor({prizes, itemHeight = 100, initialIndex = 0, loop = 20, timingFnName = 'easeCubicInOut'}) {
         this.prizes = prizes;
         if (this.prizes.length < 2) {
             console.error('奖项数组长度必须大于等于2!');
@@ -16,7 +17,7 @@ class Slot {
         this.totalHeight = this.itemHeight * this.prizes.length;    // 所有奖项总高度
         this.loop = loop;
         this.createDom();
-        this.getTimingFunctionGenerator();
+        this.getTimingFunction(timingFnName);
     }
 
     createDom() {
@@ -25,7 +26,7 @@ class Slot {
         let prizes = this.prizes,
             itemsHtml = '',
             items = [];
-        items.push(prizes[prizes.length - 1], ...prizes, ...prizes.slice(0, 2));
+        items.push(prizes[prizes.length - 1], ...prizes, ...prizes.slice(0, 2));    // 在最前面填补最后一个奖项，在最后面填补前两个奖项。
         items.forEach(item => {
             itemsHtml += `<li class="prize"><img src="${item.image}" /></li>`;
         });
@@ -33,10 +34,17 @@ class Slot {
         this.prizesList = slot.querySelector('.prizes-list');
     }
 
-    getTimingFunctionGenerator() {
-        this.timingFunctionGenerator = function() {
-            return d3.easeCubicInOut;
-        };
+    /*
+     * @param {String} timingFnName 计时函数名
+     */
+    getTimingFunction(timingFnName) {
+        console.log(timingFnName, d3[timingFnName]);
+        let fns = ['easeCubicInOut', 'easeBackIn', 'easeLinear'];
+        if (fns.indexOf(timingFnName) != -1) {
+            this.timingFunction = d3[timingFnName];
+        } else {
+            this.timingFunction = d3.easeCubicInOut;
+        }
     }
 
     /**
@@ -56,25 +64,25 @@ class Slot {
             (resolve) => {
                 prizeIndex = prizeIndex % this.prizes.length;
                 let distinedScrollDistance = this.calculateDestinedScrollDistance(prizeIndex);
-                let timingFunction = this.timingFunctionGenerator();
+                let timingFunction = this.timingFunction;
                 let currentPosition = -this.currentPrizeIndex * this.itemHeight;
                 let startTime;
                 let frame = () => {
-                    let deltaTime = Date.now() - startTime;
-                    if (deltaTime > duration) {
-                        deltaTime = duration;
+                    if (!startTime) {
+                        startTime = Date.now();
                     }
-                    let deltaDistance = distinedScrollDistance * timingFunction(deltaTime / duration);
+                    let portion = (Date.now() - startTime) / duration;
+                    portion = portion > 1 ? 1 : portion;
+                    let deltaDistance = distinedScrollDistance * timingFunction(portion);
                     let position = (currentPosition - deltaDistance) % this.totalHeight;
                     this.prizesList.style.transform = `translate3d(0, ${position}px, 0)`;
-                    if (deltaTime < duration) {
+                    if (portion < 1) {
                         window.requestAnimationFrame(frame);
                     } else {
                         this.currentPrizeIndex = prizeIndex;
                         resolve();
                     }
                 };
-                startTime = Date.now();
                 frame();
             }
         );

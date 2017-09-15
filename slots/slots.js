@@ -6,7 +6,7 @@ class Slots {
      * @param {Number} slotScrollInterval 相连两个 slot 的滚动时间差，单位 ms，默认间隔 500ms。
      */
     constructor({prizes, duration = 8000, slotsNum = 3, slotScrollInterval = 500}) {
-        this.status = 0;    // 0:初始化中；1：初始化完成，可以进行抽奖；2：抽奖中；3：抽奖完成，可再次进行抽奖。
+        this.status = 0;    // 0:初始化中；1：初始化/抽奖完成，可以进行抽奖；2：抽奖中。
         this.prizes = prizes;
         this.duration = duration;
         if (slotsNum > 1) {
@@ -34,8 +34,11 @@ class Slots {
         });
     }
 
+    /**
+     * @param {Number} prizeValue 奖项，用于标识奖项的特征值
+     */
     draw(prizeValue) {
-        if (this.status == 3 || this.status == 1) {
+        if (this.status == 1) {
             this.status = 2;
             this.currentPrizeValue = prizeValue;
             let prizesIndexes = this.getDestinedPrizeIndexesArray(prizeValue),
@@ -52,7 +55,7 @@ class Slots {
             }
 
             return Promise.all(promises).then(prizeIndexesArray => {
-                this.status = 3;
+                this.status = 1;
                 return prizeValue;
             });
         } else if (this.status == 2) {
@@ -64,12 +67,12 @@ class Slots {
     }
 
     /**
-     * 获取每个 slot 最终所要显示的项的数组
-     * 如[1, 2, 3]表示第1个slot最终要显示奖品1，第2个slot最终要显示奖品2，第3个slot最终要显示奖品3。
+     * @desc 获取每个 slot 最终所要显示的项的数组。如[1, 2, 3]表示第1个slot最终要显示奖品1，第2个slot最终要显示奖品2，第3个slot最终要显示奖品3。
+     * @param {Number} prizeValue 奖项，用于标识奖项的特征值
      */
     getDestinedPrizeIndexesArray(prizeValue) {
         let prizesArr,
-            prizeIndex = this.prizes.findIndex(prize => {
+            prizeIndex = this.prizes.findIndex(prize => {   // 查找奖项序号，如果未中奖，序号为 -1 。
                 return prize.value == prizeValue;
             });
 
@@ -80,25 +83,31 @@ class Slots {
                 prizesArr.push(prizeIndex);
             }
         } else {
-            let checkIfEqual = val => {
-                return val == prizesArr[0];
-            };
-            do {
-                prizesArr = this.getRandomArr();
-            } while (prizesArr.every(checkIfEqual));
+            prizesArr = this.getRandomArr();
         }
 
         console.log(`DestinedPrizeIndexesArray: ${prizesArr}`);
         return prizesArr;
     }
 
+    /**
+     * @desc 获取一个各项不全相等的随机数组，数组元素为奖项数组元素的序号。
+     */
     getRandomArr() {
-        let arr = [],
+        let arr,
             slotsLen = this.slots.length,
-            prizesLen = this.prizes.length;
-        for (let i = 0; i < slotsLen; i++){
-            arr.push(Math.floor(Math.random() * prizesLen));
-        }
+            prizesLen = this.prizes.length,
+            checkIfEqual = val => {
+                return val == arr[0];
+            };
+
+        do {
+            arr = [];
+            for (let i = 0; i < slotsLen; i++){
+                arr.push(Math.floor(Math.random() * prizesLen));
+            }
+        } while (arr.every(checkIfEqual));
+
         return arr;
     }
 }
