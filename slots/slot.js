@@ -34,13 +34,17 @@ class Slot {
         this.prizesList = slot.querySelector('.prizes-list');
     }
 
+    /*
+     * @param {String} timingFnName 计时函数名
+     */
     getTimingFunction(timingFnName) {
         console.log(timingFnName, d3[timingFnName]);
-        let fns = ['easeCubicInOut', 'easeBackIn'];
-        if(fns.indexOf(timingFnName) != -1) {
+        let fns = ['easeCubicInOut', 'easeBackIn', 'easeLinear'];
+        if (fns.indexOf(timingFnName) != -1) {
             this.timingFunction = d3[timingFnName];
+        } else {
+            this.timingFunction = d3.easeCubicInOut;
         }
-        this.timingFunction = d3.easeCubicInOut;
     }
 
     /**
