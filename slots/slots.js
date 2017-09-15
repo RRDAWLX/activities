@@ -4,13 +4,14 @@ class Slots {
      * @param {Number} duration 每个 slot 的滚动时间，单位 ms，默认 8000ms。
      * @param {Number} slotsNum slots 中 slot 的个数，默认 3 个，至少 2 个。
      * @param {Number} slotScrollInterval 相连两个 slot 的滚动时间差，单位 ms，默认间隔 500ms。
+     * @param {String} timingFnName 单个 slot 滚动的计时函数名，默认为 easeCubicInOut。
      */
-    constructor({prizes, duration = 8000, slotsNum = 3, slotScrollInterval = 500}) {
+    constructor({prizes, duration = 8000, slotsNum = 3, slotScrollInterval = 500, timingFnName = 'easeCubicInOut'}) {
         this.status = 0;    // 0:初始化中；1：初始化/抽奖完成，可以进行抽奖；2：抽奖中。
         this.prizes = prizes;
         this.duration = duration;
         if (slotsNum > 1) {
-            this.createSlots(slotsNum);
+            this.createSlots(slotsNum, timingFnName);
         } else {
             console.error('slot 个数至少 2 个！');
         }
@@ -19,10 +20,10 @@ class Slots {
         this.status = 1;
     }
 
-    createSlots(slotsNum) {
+    createSlots(slotsNum, timingFnName) {
         this.slots = [];
         for (let i = 0; i < slotsNum; i++) {
-            this.slots.push(new Slot({prizes}));
+            this.slots.push(new Slot({prizes, timingFnName}));
         }
     }
 

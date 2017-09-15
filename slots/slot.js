@@ -34,7 +34,7 @@ class Slot {
         this.prizesList = slot.querySelector('.prizes-list');
     }
 
-    /*
+    /**
      * @param {String} timingFnName 计时函数名
      */
     getTimingFunction(timingFnName) {
@@ -58,7 +58,7 @@ class Slot {
      * @desc 抽奖，在指定的时间内滚动至指定的奖项。
      * @param {Number} prizeIndex 奖项在初始化奖项数组中的序号
      * @param {Number} duration 摇奖时间，单位 ms，默认 8000ms。
-      */
+     */
     draw({prizeIndex, duration = 8000}) {
         return new Promise(
             (resolve) => {
