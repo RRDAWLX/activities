@@ -10,11 +10,11 @@ let prizes = [
 document.body.insertBefore(slots.dom, document.querySelector('.operation'));
 document.querySelector('#draw').addEventListener('click', function(){
     let _this = this;
-    if (slots.status == 3 || slots.status == 1) {
+    if (slots.status == 1) {
         _this.textContent = '抽奖中';
         new Promise((resolve, reject) => {
-            // let prizeValue = prizeSelector.options[prizeSelector.selectedIndex].value;
-            let prizeValue = [-1, 0, -1, 1, -1, 2, -1, 3][Math.floor(Math.random() * 8)];
+            let prizeValue = prizeSelector.options[prizeSelector.selectedIndex].value;
+            // let prizeValue = Math.floor(Math.random() * 8);
             console.log(`prizeValue: ${prizeValue}`);
             setTimeout(() => {
                 resolve(prizeValue);
@@ -23,13 +23,13 @@ document.querySelector('#draw').addEventListener('click', function(){
             return slots.draw(prizeValue);
         }).then(prizeValue => {
             _this.textContent = '再抽一次';
-            if (prizeValue == -1) {
-                alert('很遗憾，没有中奖！');
-            } else {
-                let prize = prizes.find(prize => {
-                    return prize.value == prizeValue;
-                });
+            let prize = prizes.find(prize => {
+                return prize.value == prizeValue;
+            });
+            if (prize) {
                 alert(`恭喜中奖：${prize.desc}`);
+            } else {
+                alert('很遗憾，没有中奖！');
             }
         });
     }
