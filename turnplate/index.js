@@ -8,11 +8,11 @@ let prizes = [
     turnplate = document.querySelector('.turnplate'),
     currentAngle = 0,
     pointer = document.querySelector('.pointer'),
-    turning = false;
+    rotating = false;
 
 pointer.addEventListener('click', function(e){
-    if (turning) {
-        console.log('It is turning.');
+    if (rotating) {
+        console.log('It is rotating.');
         return;
     }
     getARandomPrize();
@@ -37,10 +37,13 @@ function updateCurrentAngle() {
 }
 
 function turn() {
-    turnplate.style = `-webkit-transform: rotateZ(${currentAngle}deg); transform: rotateZ(${currentAngle}deg);`;
+    // turnplate.style = `-webkit-transform: rotateZ(${currentAngle}deg); transform: rotateZ(${currentAngle}deg);`;     // 这种方法存在兼容性问题，不知道为什。
+    turnplate.style.webkitTransform = `rotateZ(${currentAngle}deg)`;
+    turnplate.style.WebkitTransform = `rotateZ(${currentAngle}deg)`;
+    turnplate.style.transform = `rotateZ(${currentAngle}deg)`;
 }
 
 function turnout() {
     alert(currentPrize.msg);
-    turning = false;
+    rotating = false;
 }

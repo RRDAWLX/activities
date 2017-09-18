@@ -1,39 +1,72 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-        <title>turnplate</title>
-        <script>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <title>turnplate</title>
+    <script>
         document.documentElement.style.fontSize = document.documentElement.clientWidth / 750 * 100 + 'px';
-        </script>
-        <style>
+    </script>
+    <style>
         * {
-            padding: 0; border: 0; margin: 0;
+            padding: 0;
+            border: 0;
+            margin: 0;
         }
+
         body {
             background: #ddd;
         }
+
         .container {
-            position: absolute; top: 50%; left: 50%; width: 6.34rem; height: 6.34rem; transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6.34rem;
+            height: 6.34rem;
+            -webkit-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
         }
+
         .turnplate {
-            width: 100%; height: 100%; background: url("./turnplate.png") no-repeat center; background-size: contain;
-            -webkit-transition: transform 6s ease-in-out /*cubic-bezier(0.46, 0.21, 0.5, 1.09)*/;
-            transition: transform 6s ease-in-out /*cubic-bezier(0.46, 0.21, 0.5, 1.09)*/;
+            width: 100%;
+            height: 100%;
+            background: url("./turnplate.png") no-repeat center;
+            background-size: contain;
+            -webkit-transition: transform 6s ease-in-out/*cubic-bezier(0.46, 0.21, 0.5, 1.09)*/;
+            -webkit-transition: -webkit-transform 6s ease-in-out;
+            transition: -webkit-transform 6s ease-in-out;
+            transition: transform 6s ease-in-out/*cubic-bezier(0.46, 0.21, 0.5, 1.09)*/;
+            transition: transform 6s ease-in-out, -webkit-transform 6s ease-in-out;
         }
+
         .pointer {
-            position: absolute; left: 50%; top: 50%; width: 2.6rem; height: 2.6rem; transform: translate(-50%, -50%); background: url("./pointer.png") no-repeat center; background-size: contain; line-height: 2.6rem; text-align: center; color: orange; font-size: 0.5rem; cursor: pointer;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 2.6rem;
+            height: 2.6rem;
+            -webkit-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+            background: url("./pointer.png") no-repeat center;
+            background-size: contain;
+            line-height: 2.6rem;
+            text-align: center;
+            color: orange;
+            font-size: 0.5rem;
+            cursor: pointer;
         }
-        </style>
-    </head>
+    </style>
+</head>
 
-    <body>
-        <div class="container">
-            <div class="turnplate"></div>
-            <div class="pointer">抽奖</div>
-        </div>
+<body>
+    <div class="container">
+        <div class="turnplate"></div>
+        <div class="pointer">抽奖</div>
+    </div>
 
-        <script src="./index.js"></script>
-    </body>
+    <script src="./index.js"></script>
+</body>
+
 </html>
