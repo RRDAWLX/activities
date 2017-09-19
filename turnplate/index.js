@@ -38,9 +38,13 @@ function updateCurrentAngle() {
 
 function turn() {
     // turnplate.style = `-webkit-transform: rotateZ(${currentAngle}deg); transform: rotateZ(${currentAngle}deg);`;     // 这种方法存在兼容性问题，不知道为什。
-    turnplate.style.webkitTransform = `rotateZ(${currentAngle}deg)`;
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/style
+    // 注意不能通过直接给style属性设置字符串（如：elt.style = "color: blue;"）来设置style，因为style应被当成是只读的（尽管Firefox(Gecko), Chrome 和 Opera允许修改它），这是因为通过style属性返回的CSSStyleDeclaration对象是只读的。
+    turnplate.style.cssText = `-webkit-transform: rotateZ(${currentAngle}deg); transform: rotateZ(${currentAngle}deg);`;
+    // turnplate.setAttribute('style', `-webkit-transform: rotateZ(${currentAngle}deg); transform: rotateZ(${currentAngle}deg);`);
+    /*turnplate.style.webkitTransform = `rotateZ(${currentAngle}deg)`;
     turnplate.style.WebkitTransform = `rotateZ(${currentAngle}deg)`;
-    turnplate.style.transform = `rotateZ(${currentAngle}deg)`;
+    turnplate.style.transform = `rotateZ(${currentAngle}deg)`;*/
 }
 
 function turnout() {
