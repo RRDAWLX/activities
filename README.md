@@ -1,5 +1,6 @@
 # Activities
-- panorama: 全景照片
+- earth：3D地球
+- panorama：全景照片
 - scratch-card：刮刮卡
 - slots：老虎机
 - turnover：翻牌
