@@ -26,7 +26,7 @@ class Turnover {
     addListeners() {
         this.dom.addEventListener('click', e => {
             if (turnover.status == 3) {
-                this.status = 4;    // 立即设置状态为4，方式连续触发抽奖。
+                this.status = 4;    // 立即设置状态为4，防止连续触发抽奖。
                 let target = e.target;
                 while (target) {    // 从目标元素逐层往外查找 .card-container 元素
                     if (target.classList.contains('card-container')) {
