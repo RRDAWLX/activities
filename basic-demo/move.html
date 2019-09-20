@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>move</title>
+    </head>
+    <body>
+        <div id="block"></div>
+
+        <style>
+            #block {
+                float: left;
+                position: relative;
+                width: 100px;
+                height: 100px;
+                margin: 100px;
+                background: blue;
+            }
+        </style>
+
+        <script>
+            let block = document.querySelector('#block')
+            block.addEventListener('click', function() {
+                let left = 0
+                let limit = 100
+                let move = function() {
+                    left += 2
+
+                    if (left > limit) {
+                        left = limit
+                    }
+
+                    block.style.left = `${left}px`
+
+                    if (left < limit) {
+                        setTimeout(move, 20)
+                    } else {
+                        alert('done')
+                    }
+                }
+
+                setTimeout(move, 20)
+            })
+        </script>
+    </body>
+</html>

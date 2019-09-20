@@ -42,8 +42,25 @@ class Turnover {
                     new Promise(resolve => {
                         // 在这里向后端发起请求，抽奖。
                         setTimeout(() => {
-                            let prizeIndex = Math.floor(Math.random() * 4);
-                            resolve(prizeIndex);
+                            let random = Math.random()
+                            switch (true) {
+                                case random < 0.1:
+                                    resolve(0);
+                                    break;
+
+                                case random < 0.3:
+                                    resolve(1);
+                                    break;
+
+                                case random < 0.6:
+                                    resolve(2);
+                                    break;
+
+                                default:
+                                    resolve(3);
+                            }
+                            /*let prizeIndex = Math.floor(Math.random() * 4);
+                            resolve(prizeIndex);*/
                         }, 100);
                     }).then(prizeIndex => {
                         // 在被点击的牌上放置目标奖项的图片，其他牌上随机放置其他奖项的图片。

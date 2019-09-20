@@ -4,7 +4,7 @@ let prizes = [
         {value: 2, image: './bracelet.png', desc: '手环'},
         {value: 3, image: './earphone.png', desc: '耳机'}
     ],
-    slots = new Slots({prizes, duration: 7000, slotsNum: 4, slotScrollInterval: 400}),
+    slots = new Slots({prizes, duration: 7000, slotsNum: 3, slotScrollInterval: 400}),
     prizeSelector = document.querySelector('#prize');
 
 document.body.insertBefore(slots.dom, document.querySelector('.operation'));
@@ -13,8 +13,9 @@ document.querySelector('#draw').addEventListener('click', function(){
     if (slots.status == 1) {
         _this.textContent = '抽奖中';
         new Promise((resolve, reject) => {
-            let prizeValue = prizeSelector.options[prizeSelector.selectedIndex].value;
-            // let prizeValue = Math.floor(Math.random() * 8);
+            let prizeValue = Math.random() < 0.1 ? 0 : -1;
+
+            // let prizeValue = prizeSelector.value;
             console.log(`prizeValue: ${prizeValue}`);
             setTimeout(() => {
                 resolve(prizeValue);

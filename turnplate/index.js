@@ -24,7 +24,24 @@ turnplate.addEventListener('transitionend', turnout);
 turnplate.addEventListener('webkitTransitionEnd', turnout);
 
 function getARandomPrize() {
-    currentPrize = prizes[Math.floor(Math.random() * prizes.length)];
+    // currentPrize = prizes[Math.floor(Math.random() * prizes.length)];
+    let random = Math.random()
+    switch (true) {
+        case random < 0.1:
+            currentPrize = prizes[0];
+            break;
+
+        case random < 0.3:
+            currentPrize = prizes[1];
+            break;
+
+        case random < 0.6:
+            currentPrize = prizes[2];
+            break;
+
+        default:
+            currentPrize = prizes[3]
+    }
 }
 
 function updateCurrentAngle() {
@@ -51,5 +68,5 @@ function turnout() {
     setTimeout(() => {
         alert(currentPrize.msg);
         rotating = false;
-    }, 100);
+    }, 500)
 }
