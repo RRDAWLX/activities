@@ -15,4 +15,5 @@
   <img src="./common/imgs/turnover.png" width="300" />
 
 - [turnplate：转盘](https://rrdawlx.github.io/Activities/turnplate/)  
+- [bidirectional turnplate：双向转盘](https://rrdawlx.github.io/Activities/turnplate/bidirectional.html)  
   <img src="./common/imgs/turnplate.png" width="300" />
