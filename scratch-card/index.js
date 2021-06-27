@@ -1,7 +1,7 @@
 class ScratchCard {
     constructor(parentSelector) {
         this.scratchMobile = this.scratchMobile.bind(this);
-        this.scratchPc = this.scratchPc.bind(this);
+        this.scratchPC = this.scratchPC.bind(this);
         this.check = this.check.bind(this);
         this.getImageData = this.getImageData.bind(this);
 
@@ -27,6 +27,7 @@ class ScratchCard {
         context.globalCompositeOperation = 'source-over';
         context.fillStyle = 'grey';
         context.fillRect(0, 0, this.width, this.height);
+        // 刮开图层的重点 https://www.runoob.com/jsref/prop-canvas-globalcompositeoperation.html
         context.globalCompositeOperation = 'destination-out';
         return this;
     }
@@ -43,7 +44,7 @@ class ScratchCard {
     addListeners() {
         this.canvas.addEventListener('touchstart', this.scratchMobile, false);
         this.canvas.addEventListener('touchmove', this.scratchMobile, false);
-        this.canvas.addEventListener('mousemove', this.scratchPc, false);
+        this.canvas.addEventListener('mousemove', this.scratchPC, false);
         this.canvas.addEventListener('touchend', this.check, false);
         this.canvas.addEventListener('touchcancel', this.check, false);
         this.canvas.addEventListener('mouseout', this.check, false);
@@ -69,13 +70,12 @@ class ScratchCard {
     }
 
     /* 桌面端刮卡 */
-    scratchPc(e) {
+    scratchPC(e) {
         if (this.scratched) {
             return;
         }
 
         let context = this.context,
-            canvas = this.canvas,
             radius = 30,
             x = e.layerX,
             y = e.layerY;
