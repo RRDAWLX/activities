@@ -53,6 +53,8 @@ function turn() {
 }
 
 function turnout() {
-    alert(currentPrize.msg);
-    rotating = false;
+    setTimeout(() => {
+        alert(currentPrize.msg);
+        rotating = false;
+    }, 100);
 }

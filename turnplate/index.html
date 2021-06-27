@@ -30,8 +30,7 @@
             left: 50%;
             width: 6.34rem;
             height: 6.34rem;
-            -webkit-transform: translate(-50%, -50%);
-                    transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
         }
 
         .turnplate {
@@ -39,11 +38,9 @@
             height: 100%;
             background: url("./turnplate.png") no-repeat center;
             background-size: contain;
-            -webkit-transition: transform 6s ease-in-out/*cubic-bezier(0.46, 0.21, 0.5, 1.09)*/;
-            -webkit-transition: -webkit-transform 6s ease-in-out;
-            transition: -webkit-transform 6s ease-in-out;
-            transition: transform 6s ease-in-out/*cubic-bezier(0.46, 0.21, 0.5, 1.09)*/;
-            transition: transform 6s ease-in-out, -webkit-transform 6s ease-in-out;
+            transition: transform 6s ease-in-out;
+            /* 结束阶段回滚 */
+            /* transition: transform 6s cubic-bezier(0.46, 0.21, 0.5, 1.09); */
         }
 
         .pointer {
@@ -52,8 +49,7 @@
             top: 50%;
             width: 2.6rem;
             height: 2.6rem;
-            -webkit-transform: translate(-50%, -50%);
-                    transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
             background: url("./pointer.png") no-repeat center;
             background-size: contain;
             line-height: 2.6rem;
