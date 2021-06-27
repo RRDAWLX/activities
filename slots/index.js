@@ -13,6 +13,7 @@ document.querySelector('#draw').addEventListener('click', function(){
     if (slots.status == 1) {
         _this.textContent = '抽奖中';
         new Promise((resolve, reject) => {
+            // 中奖概率在这调整
             let prizeValue = Math.random() < 0.1 ? 0 : -1;
 
             // let prizeValue = prizeSelector.value;

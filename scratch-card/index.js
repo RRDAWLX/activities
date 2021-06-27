@@ -158,7 +158,20 @@ let getAPrize = function() {
         }
     ];
 
-    return () => prizes[Math.floor(Math.random() * 3)];
+    return () => {
+        let random = Math.random()
+        // 中奖概率在这调整
+        switch (true) {
+            case random < 0.1:
+                return prizes[0];
+
+            case random < 0.5:
+                return prizes[1];
+
+            default:
+                return prizes[2];
+        }
+    }
 }();
 
 let scratchCard = new ScratchCard('#scratchCard').setPrizeInfo(getAPrize());
@@ -167,7 +180,7 @@ let scratchCard = new ScratchCard('#scratchCard').setPrizeInfo(getAPrize());
 document.querySelector('#reset').addEventListener('click', () => {
     scratchCard.cover().setPrizeInfo(getAPrize());
 }, false);
-document.querySelector('#trans').addEventListener('click', () => {
+/* document.querySelector('#trans').addEventListener('click', () => {
     scratchCard.transparentize();
 }, false);
 document.querySelector('#data').addEventListener('click', () => {
@@ -175,4 +188,4 @@ document.querySelector('#data').addEventListener('click', () => {
 }, false);
 document.querySelector('#info').addEventListener('click', () => {
     document.querySelector('#msg').textContent = `width * height = ${scratchCard.width} * ${scratchCard.height} = ${scratchCard.width * scratchCard.height}, pixels: ${scratchCard.getPixelLength()}.`;
-}, false);
+}, false); */

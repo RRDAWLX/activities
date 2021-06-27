@@ -26,6 +26,7 @@ turnplate.addEventListener('webkitTransitionEnd', turnout);
 function getARandomPrize() {
     // currentPrize = prizes[Math.floor(Math.random() * prizes.length)];
     let random = Math.random()
+    // 中奖概率在这调整
     switch (true) {
         case random < 0.1:
             currentPrize = prizes[0];
