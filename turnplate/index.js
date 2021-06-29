@@ -67,7 +67,7 @@ function turn() {
 
 function turnout() {
     setTimeout(() => {
-        alert(currentPrize.msg);
+        alert(`${currentPrize.msg} ${(new Date()).toLocaleString()}`);
         rotating = false;
     }, 500)
 }

@@ -29,7 +29,7 @@ document.querySelector('#draw').addEventListener('click', function(){
                 return prize.value == prizeValue;
             });
             if (prize) {
-                alert(`恭喜中奖：${prize.desc}`);
+                alert(`恭喜中奖：${prize.desc} ${(new Date()).toLocaleString()}`);
             } else {
                 alert('很遗憾，没有中奖！');
             }

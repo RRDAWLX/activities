@@ -92,7 +92,7 @@ class Turnover {
                         // 修改翻牌游戏的状态
                         this.status = 5;
                         console.log('drawn: animations done');
-                        alert(this.prizes[this.currentPrizeIndex].msg);
+                        alert(`${this.prizes[this.currentPrizeIndex].msg} ${(new Date()).toLocaleString()}`);
                     });
                 } else {
                     this.status = 3;    // 回退到状态3
