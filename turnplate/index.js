@@ -28,7 +28,7 @@ function getARandomPrize() {
     let random = Math.random()
     // 中奖概率在这调整
     switch (true) {
-        case random < 0.1:
+        case random < 0.01:
             currentPrize = prizes[0];
             break;
 
