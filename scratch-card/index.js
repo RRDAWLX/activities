@@ -103,7 +103,7 @@ class ScratchCard {
             this.clear();
             this.scratched = true;
             setTimeout(() => {
-                alert(`this.prizeMsg ${(new Date()).toLocaleString()}`);
+                alert(`${this.prizeMsg} ${(new Date()).toLocaleString()}`);
             }, 17);
         }
     }
