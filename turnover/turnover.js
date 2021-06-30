@@ -45,7 +45,7 @@ class Turnover {
                             let random = Math.random()
                             // 中奖概率在这调整
                             switch (true) {
-                                case random < 0.1:
+                                case random < 0.01:
                                     resolve(0);
                                     break;
 
