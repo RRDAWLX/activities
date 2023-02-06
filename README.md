@@ -1,5 +1,6 @@
 # Activities
-- [earth：3D地球](https://rrdawlx.github.io/activities/earth/)  
+- [earth：操控 3D 地球](https://rrdawlx.github.io/activities/earth/manipulate) 
+- [earth：3D 地球公转并自转](https://rrdawlx.github.io/activities/earth/revolution-and-rotation)  
   <img src="./common/imgs/earth.png" width="300" />
 
 - [panorama：全景照片](https://rrdawlx.github.io/activities/panorama/)  
