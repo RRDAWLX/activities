@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earth: manipulate</title>
+  <link rel="stylesheet" type="text/css" href="./common.css">
+  <style>
+    canvas {
+      cursor: grab;
+    }
+    canvas:active {
+      cursor: grabbing;
+    }
+    .hint {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 20px;
+      padding: 0 10px;
+      line-height: 20px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="hint pc">试试拖动地球</div>
+  <script type="importmap">
+  	{
+      "imports": {
+        "three": "../common/three.149.module.js"
+      }
+  	}
+  </script>
+  
+  <script type="module" src="./manipulate.js"></script>
+</body>
+</html>
