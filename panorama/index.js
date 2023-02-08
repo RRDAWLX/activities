@@ -2,6 +2,7 @@
  * 全景照片
  * 测试发现 camera 中旋转相关的方法都无效
  */
+import * as THREE from 'three';
 
 let scene, camera, renderer,
     a = 0,  // 空间中点P在Oxz屏幕上的射影Q，迎着y轴看时，OQ按逆时针方向旋转与z轴正向的夹角。
@@ -48,18 +49,6 @@ function init() {
     render();
 }
 
-function createCubeMap() {
-  let urls = [
-    './posx.jpg',
-    './negx.jpg',
-    './posy.jpg',
-    './negy.jpg',
-    './posz.jpg',
-    './negz.jpg',
-  ];
-  return THREE.ImageUtils.loadTextureCube(urls);
-}
-
 function render() {
   camera.lookAt(new THREE.Vector3(Math.sin(b) * Math.sin(a), Math.cos(b), Math.sin(b) * Math.cos(a)));
   renderer.render(scene, camera);
@@ -67,31 +56,49 @@ function render() {
 }
 
 let startX, startY, preA, preB;
-window.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    preA = a;
-    preB = b;
-});
+function startDragging(x, y) {
+  startX = x
+  startY = y
+  preA = a
+  preB = b
+}
+let factor = Math.PI / 180 / 10
+function drag(x, y) {
+  let deltaX = x - startX
+  let deltaY = y - startY
+  a = preA + deltaX * factor
+  let tempB = preB - deltaY * factor
+  // camera 沿着水平轴旋转超过 90° 或 -90° 后画面会发生上下颠倒，不符合需求，所以让其视线永远无法平行于 y 轴。
+  if (tempB <= 0) {
+    b = 1e-10
+  } else if (tempB >= Math.PI) {
+    b = Math.PI - 1e-10
+  } else {
+    b = tempB
+  }
+}
 
-let factor = Math.PI / 180 / 10;
+window.addEventListener('touchstart', e => {
+  startDragging(e.touches[0].clientX, e.touches[0].clientY)
+})
+
 window.addEventListener('touchmove', e => {
-    let deltaX = e.changedTouches[0].clientX - startX,
-        deltaY = e.changedTouches[0].clientY - startY;
-    a = preA + deltaX * factor;
-    let tempB = preB - deltaY * factor;
-    // 当 camera 的视线平行于 y 轴时，需对其姿态做调整，但目前看来无法调整其姿态，所以让其视线永远无法平行于 y 轴。
-    if (tempB <= 0) {
-      b = 1e-10;
-    } else if (tempB >= Math.PI) {
-      b = Math.PI - 1e-10;
-    } else {
-      b = tempB;
-    }
-});
+  drag(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
+})
 
 /*window.addEventListener('touchend', e => {
   console.log(`(${a / Math.PI * 180}, ${b / Math.PI * 180}), (${Math.sin(b) * Math.sin(a)}, ${Math.cos(b)}, ${Math.sin(b) * Math.cos(a)})`)
 });*/
+
+window.addEventListener('mousedown', e => {
+  startDragging(e.clientX, e.clientY)
+  let cb = e => {
+    drag(e.clientX, e.clientY)
+  }
+  window.addEventListener('mousemove', cb)
+  window.addEventListener('mouseup', () => {
+    window.removeEventListener('mousemove', cb)
+  }, { once: true })
+})
 
 init();
