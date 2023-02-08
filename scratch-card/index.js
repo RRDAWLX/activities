@@ -47,7 +47,6 @@ class ScratchCard {
         this.canvas.addEventListener('mousemove', this.scratchPC, false);
         this.canvas.addEventListener('touchend', this.check, false);
         this.canvas.addEventListener('touchcancel', this.check, false);
-        this.canvas.addEventListener('mouseout', this.check, false);
         return this;
     }
 
@@ -77,12 +76,13 @@ class ScratchCard {
 
         let context = this.context,
             radius = 30,
-            x = e.layerX,
-            y = e.layerY;
+            x = e.offsetX,
+            y = e.offsetY;
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.closePath();
         context.fill();
+        this.check()
     }
 
     /* 检查刮刮卡是否已被刮开了足够的区域，如果刮开了足够的区域，则认为刮刮卡已被刮开，清楚刮层，并执行后续相关操作 */
