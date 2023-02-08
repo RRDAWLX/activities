@@ -38,8 +38,8 @@ function init() {
     fragmentShader: shader.fragmentShader,
     vertexShader: shader.vertexShader,
     uniforms: shader.uniforms,
-    depthWrite: false,
-    side: THREE.DoubleSide
+    depthWrite: false, // 2d 渲染就行
+    side: THREE.BackSide, // 只渲染一面就行
   })
 
   let panoramaCube = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), material)
