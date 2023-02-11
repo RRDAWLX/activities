@@ -8,57 +8,71 @@ const dev = false
 
 class Sphere {
   #sphere
+  #initPosition
   #revolutionAxis
   #revolutionPeriod
-  #rotateAxis = new THREE.Vector3(0, 1, 0)
+  #rotationAxis = new THREE.Vector3(0, 1, 0)
   #rotationPeriod
+  #inclination
   #children = []
 
+  /**
+   * @param {object} param
+   * @param {THREE.Material} param.MaterialType
+   * @param {THREE.Texture} param.texture
+   * @param {number} param.radius
+   * @param {THREE.Vector3} param.position
+   * @param {number} param.revolutionPeriod 公转周期，单位 s
+   * @param {THREE.Vector3} param.revolutionAxis
+   * @param {number} param.rotationPeriod 自转周期，单位 s
+   * @param {number} param.inclination 倾斜角，单位 度
+   */
   constructor({
-    radius,
     texture,
-    revolutionPeriod = 0, // 公转周期，单位 s
-    revolutionRadius = 0,
-    revolutionAxis = new THREE.Vector3(0, 1, 0),
-    rotationPeriod = 0, // 自转周期，单位 s
-    inclination = 0, // 倾斜角，单位 度
     MaterialType = THREE.MeshBasicMaterial,
+    radius,
+    position,
+    revolutionPeriod = 0,
+    revolutionAxis = new THREE.Vector3(0, 1, 0),
+    rotationPeriod = 0,
+    inclination = 0,
   }) {
     let sphereGeometry = new THREE.SphereGeometry(radius, 40, 40)
     let sphereMaterial = new MaterialType({ map: texture })
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
-    sphere.position.x = revolutionRadius
-
-    if (inclination) {
-      sphere.rotateZ(inclination / 180 * Math.PI) // 倾斜 30°
-    }
 
     if (dev) {
       sphere.add(new THREE.AxesHelper(20))
     }
 
     this.#sphere = sphere
+    this.#initPosition = position
     this.#revolutionPeriod = revolutionPeriod
-    this.#revolutionAxis = revolutionAxis
+    this.#revolutionAxis = revolutionAxis.normalize()
     this.#rotationPeriod = rotationPeriod
+    this.#inclination = inclination / 180 * Math.PI
   }
 
   /**
-   * @param {number} deltaTime 自动画开始的总消失时间
+   * @param {number} elipsedTime 自动画开始的总消失时间
    */
-  update(deltaTime) {
+  update(elipsedTime) {
+    let sphere = this.#sphere
+
     if (this.#revolutionPeriod) {
-      let revolutionRadian = deltaTime / this.#revolutionPeriod * 2 * Math.PI
-      this.#sphere.position.applyAxisAngle(this.#revolutionAxis, revolutionRadian)
+      let revolutionRadian = (elipsedTime / this.#revolutionPeriod) % 1 * 2 * Math.PI
+      sphere.position.copy(this.#initPosition)
+      sphere.position.applyAxisAngle(this.#revolutionAxis, revolutionRadian)
     }
 
     if (this.#rotationPeriod) {
-      let rotationRadian = deltaTime / this.#rotationPeriod * 2 * Math.PI
-      this.#sphere.rotateOnAxis(this.#rotateAxis, rotationRadian)
+      let rotationRadian = (elipsedTime / this.#rotationPeriod) % 1 * 2 * Math.PI
+      sphere.rotation.set(0, 0, this.#inclination)
+      sphere.rotateOnAxis(this.#rotationAxis, rotationRadian)
     }
 
     for (let child of this.#children) {
-      child.update(deltaTime)
+      child.update(elipsedTime)
     }
   }
 
@@ -112,26 +126,26 @@ const orbitControls = new OrbitControls(camera, renderer.domElement)
 
 async function init() {
   let moon = createSphere({
-    radius: 3,
     textureUrl: './moon.jpg',
+    MaterialType: THREE.MeshPhysicalMaterial,
+    radius: 3,
+    position: new THREE.Vector3(25, 0, 0),
     revolutionPeriod: 5,
-    revolutionRadius: 25,
     rotationPeriod: 5,
     inclination: 1.5,
-    MaterialType: THREE.MeshPhysicalMaterial,
   })
   let earth = createSphere({
-    radius: 10,
     textureUrl: './Earth.png',
+    MaterialType: THREE.MeshPhysicalMaterial,
+    radius: 10,
+    position: new THREE.Vector3(100, 0, 0),
     revolutionPeriod: 20,
-    revolutionRadius: 100,
     rotationPeriod: 5,
     inclination: -30,
-    MaterialType: THREE.MeshPhysicalMaterial,
   })
   let sun = createSphere({
-    radius: 30,
     textureUrl: './sun.webp',
+    radius: 30,
     rotationPeriod: 10
   })
 
@@ -152,10 +166,10 @@ scene.add(new THREE.PointLight())
 const updates = []
 const clock = new THREE.Clock()
 function animate() {
-  let deltaTime = clock.getDelta()
+  let elipsedTime = clock.getElapsedTime()
 
   for (let update of updates) {
-    update(deltaTime)
+    update(elipsedTime)
   }
 
   renderer.render(scene, camera)
