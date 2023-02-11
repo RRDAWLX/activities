@@ -22,9 +22,10 @@ class Sphere {
     revolutionAxis = new THREE.Vector3(0, 1, 0),
     rotationPeriod = 0, // 自转周期，单位 s
     inclination = 0, // 倾斜角，单位 度
+    MaterialType = THREE.MeshBasicMaterial,
   }) {
     let sphereGeometry = new THREE.SphereGeometry(radius, 40, 40)
-    let sphereMaterial = new THREE.MeshBasicMaterial({ map: texture })
+    let sphereMaterial = new MaterialType({ map: texture })
     let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
     sphere.position.x = revolutionRadius
 
@@ -103,7 +104,7 @@ camera.position.z = 200
 camera.lookAt(scene.position)
 
 const renderer = new THREE.WebGLRenderer()
-renderer.setClearColor(new THREE.Color(0x111111))
+// renderer.setClearColor(new THREE.Color(0x111111))
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 
@@ -117,6 +118,7 @@ async function init() {
     revolutionRadius: 25,
     rotationPeriod: 5,
     inclination: 1.5,
+    MaterialType: THREE.MeshPhysicalMaterial,
   })
   let earth = createSphere({
     radius: 10,
@@ -125,6 +127,7 @@ async function init() {
     revolutionRadius: 100,
     rotationPeriod: 5,
     inclination: -30,
+    MaterialType: THREE.MeshPhysicalMaterial,
   })
   let sun = createSphere({
     radius: 30,
@@ -143,6 +146,8 @@ async function init() {
     sun.update(elipsedTime)
   })
 }
+
+scene.add(new THREE.PointLight())
 
 const updates = []
 const clock = new THREE.Clock()
